@@ -1,0 +1,17 @@
+sample,sinf,method
+0,1,read_counts
+10,1.0175731196117848,read_counts
+100,1.0431915646651815,read_counts
+10000,1.0632925330358698,read_counts
+0,1,read_pileups
+10,0.7892710331482145,read_pileups
+100,0.9474161080671687,read_pileups
+10000,0.8933288154930639,read_pileups
+0,1,read_pileups_on_SNPs
+10,1.0301213292962512,read_pileups_on_SNPs
+100,1.0513244451480992,read_pileups_on_SNPs
+10000,1.0862788574445115,read_pileups_on_SNPs
+0,1,read_pileups_on_SNPs_in_peaks
+10,2.812678479850706,read_pileups_on_SNPs_in_peaks
+100,2.1615125091511946,read_pileups_on_SNPs_in_peaks
+10000,2.288105946901191,read_pileups_on_SNPs_in_peaks
