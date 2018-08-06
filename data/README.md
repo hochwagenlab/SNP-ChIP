@@ -319,9 +319,8 @@ HWKGGAFXX_n01_ah7011spike-red1-inp_0118.fastq.gz:
 rm H*
 ```
 
-Get the pipeline (`shell_scripts/Spike-in_subset_mapping.slurm`) and run in
-`for loop` across subsample read number with a nested `for loop` across FASTQ
-files:
+Get the pipeline and run in `for loop` across subsample read number with a 
+nested `for loop` across FASTQ files:
 
 ```bash
 # Unzip files
