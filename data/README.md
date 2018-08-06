@@ -335,7 +335,7 @@ mv shell_scripts/Spike-in_subset_mapping.slurm .
 rm -rf shell_scripts
 
 # Alternatively, just run:
-wget https://raw.githubusercontent.com/hochwagenlab/SNP-ChIP/master/Spike-in_subset_mapping.slurm
+wget https://raw.githubusercontent.com/hochwagenlab/SNP-ChIP/master/shell_scripts/Spike-in_subset_mapping.slurm
 
 # Need to avoid having more than one instance of the pipeline access the same
 # file at the same time: submit each read count in "for loop" across files;
