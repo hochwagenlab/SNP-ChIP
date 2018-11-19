@@ -89,6 +89,16 @@ ggplot(df, aes(read_n, Count / 1000000, colour=Sample, shape=Genome)) +
   theme(legend.text.align = 0)
 
 #------------------------------------------------------------------------------#
+# Average percentage of mapped reads
+mapped_reads <- df %>% group_by(Sample, read_n) %>%
+    summarise(mapped_reads=sum(Count))
+
+mapped_reads$percent_mapped <- mapped_reads$mapped_reads /
+    (mapped_reads$read_n * 1000000) * 100
+mean(mapped_reads$percent_mapped)
+sd(mapped_reads$percent_mapped)
+
+#------------------------------------------------------------------------------#
 #                                   Panel B                                    #
 # All combinations of sequencing depths                                        #
 #------------------------------------------------------------------------------#
