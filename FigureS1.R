@@ -60,7 +60,6 @@ p <- ggplot(SNPs, aes(Distance)) +
 
 d <- ggplot_build(p)$data[[1]]
 hist <- data.frame(x=d$x,
-                   # xmin=d$xmin, xmax=d$xmax,
                    y=d$y)
 
 ggplot(hist, aes(x, y)) +
@@ -76,3 +75,37 @@ ggplot(hist, aes(x, y)) +
            label=paste0("median\n(", round(median_value, 0), ")")) +
   annotate('text', x=350, y=7000,
            label=paste0('(n = ', nrow(SNPs), ')'))
+
+
+#------------------------------------------------------------------------------#
+#                                   Panel B                                    #
+# Histogram of distances between consecutive SNPs for each chromosome          #
+#------------------------------------------------------------------------------#
+
+mean_values <- SNPs %>% group_by(chr) %>%
+    summarise(Mean=mean(Distance, na.rm = TRUE))
+median_values <- SNPs %>% group_by(chr) %>%
+    summarise(Median=median(Distance, na.rm = TRUE))
+
+drop_genome <- function(string) str_replace(string, '_SK1', '')
+
+p <- ggplot(SNPs, aes(Distance)) +
+    geom_histogram(aes(y= ..count..), bins=50, colour='grey30',
+                   alpha=0.25, na.rm = T) +
+    facet_wrap( ~ chr, ncol=4, labeller=as_labeller(drop_genome)) +
+    xlim(-5, 500) +
+    geom_segment(aes(x=Mean, y=0, xend=Mean, yend=700), data=mean_values,
+                 linetype='dotted', color='red', size=0.4) +
+    geom_text(aes(x=Mean+80, y=800, label=paste0("mean (", round(Mean, 0), ")")),
+              data=mean_values, size=3) +
+    geom_segment(aes(x=Median, y=0, xend=Median, yend=1000), data=median_values,
+                 linetype='dotted', color='red', size=0.4) +
+    geom_text(aes(x=Median+80, y=1100,
+                  label=paste0("median (", round(Median, 0), ")")),
+                  data=median_values, size=3) +
+    labs(title='', x='Distance (bp)', y='Count') +
+    theme(
+        strip.background=element_blank()
+    )
+
+p
