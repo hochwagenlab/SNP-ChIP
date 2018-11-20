@@ -111,7 +111,7 @@ ggplot(nfs, aes(sample, nf * 100, fill=sample)) +
 
 #------------------------------------------------------------------------------#
 #                                   Panel B                                    #
-# Red1 fragment pileup example before and after spike-in normalization         #
+# Signal onm example chromosome                                                #
 #------------------------------------------------------------------------------#
 fragment_pileups <- lapply(gH2AX_pileup, import_bedGraph)
 
@@ -235,6 +235,95 @@ ggplot(df_chr, aes(position / 1000, signal, colour=strain)) +
     geom_area(position='identity', aes(fill=strain), alpha=0.5, size=0.25) +
     facet_grid(strain ~ .) +
     annotate("text", x=600, y=3.9, label=c(
+        expression(
+            italic('RED1') * '/' * italic('RED1'),
+            italic('red1'['ycs4S']) * '/' * italic('RED1'),
+            italic('red1') * Delta * '/' * italic('RED1'),
+            italic('red1'['ycs4S']) * '/' * italic('red1'['ycs4S']),
+            italic('red1'['ycs4S']) * '/' * italic('red1') * Delta,
+            italic('spo11-YF/spo11-YF'))),
+        size=3.1, colour=strain_colors) +
+    labs(title='',
+         x=paste0('Position on chr XI (Kb)'),
+         y=expression(paste(gamma, '-H2AX occupancy'))) +
+    scale_y_continuous(limits=c(0, 4.9), breaks=c(0, 4)) +
+    
+    theme(
+        legend.position = "none",
+        strip.background=element_blank(),
+        strip.text = element_blank()
+    )
+
+#------------------------------------------------------------------------------#
+#                                   Panel C                                    #
+# Signal from telomeres                                                        #
+#------------------------------------------------------------------------------#
+chr <- lapply(fragment_pileups, make_df_for_plotting,
+              window_size=20, chr='chrXI_SK1')
+
+# Add sample names to df
+for (i in seq_along(chr)) {
+    message('>>> ', names(chr)[i])
+    chr[[i]]$strain <- names(chr)[i]
+}
+
+### Normalize signal
+# (also save non-normalized signal)
+# Compute genome-wide signal average
+compute_avrg <- function(x) {
+    # Drop S288C values
+    x <- keepSeqlevels(x, paste0('chr', as.roman(1:16), '_SK1'),
+                       pruning.mode="coarse")
+    sum(width(x) * score(x)) / sum(width(x))
+}
+
+fragment_pileup_avrgs <- lapply(fragment_pileups, compute_avrg)
+
+# Rename samples in NF table to match new data
+nfs_renamed <- mutate(
+    nfs,
+    sample=recode(
+        sample,
+        'RED1/RED1'='WT',
+        'red1_ycs4/RED1'='ycs4S/RED1',
+        'red1∆/RED1'='red1/RED1',
+        'red1_ycs4/red1_ycs4'='ycs4S/ycs4S',
+        'red1_ycs4/red1∆'='ycs4S/red1'))
+
+# Normalize by average signal and then spike-in factor
+for (i in seq_along(chr)) {
+    message('>>> ', names(chr)[i])
+    chr[[i]]$non_norm_signal <- chr[[i]]$signal
+    chr[[i]]$signal <- chr[[i]]$signal / fragment_pileup_avrgs[[names(chr)[i]]]
+    nf <- as.numeric(subset(nfs_renamed, sample == names(chr)[i], select='nf'))
+    message('    nf: ', nf)
+    chr[[i]]$signal <- chr[[i]]$signal * nf
+}
+
+df_chr <- do.call('rbind', chr)
+
+# Rename strains
+df_chr <- mutate(
+    df_chr,
+    strain=recode(
+        strain,
+        'WT'='RED1/RED1',
+        'ycs4S/RED1'='red1_ycs4/RED1',
+        'red1/RED1'='red1∆/RED1',
+        'ycs4S/ycs4S'='red1_ycs4/red1_ycs4',
+        'ycs4S/red1'='red1_ycs4/red1∆'))
+
+# Order strains
+df_chr$strain <- factor(df_chr$strain, levels=c(
+    'RED1/RED1', 'red1_ycs4/RED1', 'red1∆/RED1', 'red1_ycs4/red1_ycs4',
+    'red1_ycs4/red1∆', 'spo11-YF/spo11-YF'))
+
+ggplot(subset(df_chr, position < 10000), aes(position / 1000, signal, colour=strain)) +
+    scale_color_manual('', values=strain_colors) +
+    scale_fill_manual('', values=strain_colors) +
+    geom_area(position='identity', aes(fill=strain), alpha=0.5, size=0.25) +
+    facet_grid(strain ~ .) +
+    annotate("text", x=6, y=3.9, label=c(
         expression(
             italic('RED1') * '/' * italic('RED1'),
             italic('red1'['ycs4S']) * '/' * italic('RED1'),
