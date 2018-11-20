@@ -74,7 +74,7 @@ ggplot(hist, aes(x, y)) +
   annotate('text', x=median_value, y=6500,
            label=paste0("median\n(", round(median_value, 0), ")")) +
   annotate('text', x=350, y=7000,
-           label=paste0('(n = ', nrow(SNPs), ')'))
+           label=paste0('(n SNPs = ', nrow(SNPs), ')'))
 
 
 #------------------------------------------------------------------------------#
