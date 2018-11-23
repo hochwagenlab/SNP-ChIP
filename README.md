@@ -3,7 +3,7 @@
 
 The paper is currently under preparation.
 
-The raw sequencing data have been deposited in NCBI's Gene Expression Omnibus and are accessible through GEO Series accession number [GSE115092](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE115092) (private until publication).
+The raw and processed sequencing data have been deposited in NCBI's Gene Expression Omnibus and are accessible through GEO Series accession number [GSE115092](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE115092).
 
 The R code used to produce the figures can be found in this directory. Details about lower level data analysis, starting from the raw FASTQ files output by the illumina sequencer, can be found in the [data](data/README.md) section.
 
