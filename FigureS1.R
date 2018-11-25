@@ -109,3 +109,9 @@ p <- ggplot(SNPs, aes(Distance)) +
     )
 
 p
+
+### Why are the values for chr I so low?
+n <- SNPs %>% group_by(chr) %>% summarize(n())
+n_1bp <- SNPs %>% filter(Distance == 1) %>% group_by(chr) %>% summarize(n())
+
+n_1bp$`n()` / n$`n()` * 100
