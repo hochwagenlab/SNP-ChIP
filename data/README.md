@@ -52,23 +52,23 @@ mkdir S288C_SK1_Yue_hybrid_genome && cd S288C_SK1_Yue_hybrid_genome
 # Download nuclear genomes
 wget http://yjx1217.github.io/Yeast_PacBio_2016/data/Nuclear_Genome/SK1.genome.fa.gz
 wget http://yjx1217.github.io/Yeast_PacBio_2016/data/Nuclear_GFF/SK1.all_feature.gff.gz
-wget http://yjx1217.github.io/Yeast_PacBio_2016/data/Nuclear_Genome/S288c.genome.fa.gz
-wget http://yjx1217.github.io/Yeast_PacBio_2016/data/Nuclear_GFF/S288c.all_feature.gff.gz
+wget http://yjx1217.github.io/Yeast_PacBio_2016/data/Nuclear_Genome/S288C.genome.fa.gz
+wget http://yjx1217.github.io/Yeast_PacBio_2016/data/Nuclear_GFF/S288C.all_feature.gff.gz
 gunzip *
 
 # SK1 FASTA has 32 lines, S288c has 221656;
 # Unlikely to make any difference, but delete excess new lines
-# in S288c.genome.fa for consistency
-awk '!/^>/ { printf "%s", $0; n = "\n" } /^>/ { print n $0; n = "" } END { printf "%s", n }' S288c.genome.fa \
->> new_S288c.genome.fa
-mv new_S288c.genome.fa S288c.genome.fa
+# in S288C.genome.fa for consistency
+awk '!/^>/ { printf "%s", $0; n = "\n" } /^>/ { print n $0; n = "" } END { printf "%s", n }' S288C.genome.fa \
+>> new_S288C.genome.fa
+mv new_S288C.genome.fa S288C.genome.fa
 
 # Add strain name to chr names (to make them distinguishable)
-sed -i -E 's/(>chr[IVX]+)/\1_S288C/' S288c.genome.fa
+sed -i -E 's/(>chr[IVX]+)/\1_S288C/' S288C.genome.fa
 sed -i -E 's/(>chr[IVX]+)/\1_SK1/' SK1.genome.fa
 
 # Concatenate genomes (cat alone would not introduce new line between files)
-cat S288c.genome.fa <(echo) SK1.genome.fa > S288c_SK1_Yue.fa
+cat S288C.genome.fa <(echo) SK1.genome.fa > S288c_SK1_Yue.fa
 ```
 
 
@@ -83,14 +83,14 @@ as described below.
 #### Download genomes
 
 ```bash
-mkdir Yue_SK1_v_S288C_SNPs
-cd Yue_SK1_v_S288C_SNPs
+mkdir Yue_SK1_v_S288c_SNPs
+cd Yue_SK1_v_S288c_SNPs
 
 wget http://yjx1217.github.io/Yeast_PacBio_2016/data/Nuclear_Genome/SK1.genome.fa.gz
 wget http://yjx1217.github.io/Yeast_PacBio_2016/data/Nuclear_GFF/SK1.all_feature.gff.gz
 
-wget http://yjx1217.github.io/Yeast_PacBio_2016/data/Nuclear_Genome/S288c.genome.fa.gz
-wget http://yjx1217.github.io/Yeast_PacBio_2016/data/Nuclear_GFF/S288c.all_feature.gff.gz
+wget http://yjx1217.github.io/Yeast_PacBio_2016/data/Nuclear_Genome/S288C.genome.fa.gz
+wget http://yjx1217.github.io/Yeast_PacBio_2016/data/Nuclear_GFF/S288C.all_feature.gff.gz
 
 gunzip *
 ```
@@ -99,7 +99,7 @@ gunzip *
 
 * Select **`Align with progressiveMauve...`** in the Mauve GUI
     * Select genome files and define output file name:
-        - `S288c.genome.fa`
+        - `S288C.genome.fa`
         - `SK1.genome.fa`
         - Output file name: `S288c_v_SK1.aln`
 * Select **`Tools > Export > Export SNPs`** in the Mauve GUI
@@ -169,11 +169,11 @@ gene sequences from whole genome FASTA files.
 
 ```bash
 # Check available feature types
-cut -f 3 S288c.all_feature.gff | sort | uniq -c
+cut -f 3 S288C.all_feature.gff | sort | uniq -c
 cut -f 3 SK1.all_feature.gff | sort | uniq -c
 
 # Keep only 'gene' features
-grep 'gene' S288c.all_feature.gff > S288c.genes.gff
+grep 'gene' S288C.all_feature.gff > S288c.genes.gff
 grep 'gene' SK1.all_feature.gff > SK1.genes.gff
 
 # Convert GFF to BED format in order to save the gene ID in output FASTA
@@ -186,7 +186,7 @@ paste SK1.genes.temp.bed <(cut -f9 SK1.genes.gff | cut -d "=" -f3) > SK1.genes.b
 rm *.temp.bed
 
 # Extract DNA sequences
-bedtools getfasta -name -fi S288c.genome.fa -bed S288c.genes.bed -fo S288c.genes.fa
+bedtools getfasta -name -fi S288C.genome.fa -bed S288c.genes.bed -fo S288c.genes.fa
 bedtools getfasta -name -fi SK1.genome.fa -bed SK1.genes.bed -fo SK1.genes.fa
 ```
 
@@ -208,7 +208,7 @@ GENES=(YAL058W YAL056W YAL055W YAL054C)
 
 for Gene in ${GENES[@]}
 do
-  grep -A1 $Gene S288c.genes.fa SK1.genes.fa S288c.pep.fa SK1.pep.fa
+  grep -A1 $Gene S288C.genes.fa SK1.genes.fa S288c.pep.fa SK1.pep.fa
 done
 
 for FILE in SK1.genes.fa S288c.genes.fa
@@ -396,11 +396,11 @@ assembly.
 # Get S288C Yue genome
 mkdir S288C && cd S288C_genome
 
-wget http://yjx1217.github.io/Yeast_PacBio_2016/data/Nuclear_Genome/S288c.genome.fa.gz
-wget http://yjx1217.github.io/Yeast_PacBio_2016/data/Nuclear_GFF/S288c.all_feature.gff.gz
+wget http://yjx1217.github.io/Yeast_PacBio_2016/data/Nuclear_Genome/S288C.genome.fa.gz
+wget http://yjx1217.github.io/Yeast_PacBio_2016/data/Nuclear_GFF/S288C.all_feature.gff.gz
 
 # Build bowtie index
-bowtie-build -f S288c.genome.fa S288c_Yue
+bowtie-build -f S288C.genome.fa S288c_Yue
 
 # Align all fastq files (3 replicates of WT Red1 ChIP-seq)
 cd ..
@@ -646,7 +646,7 @@ pileups <- list(
 ### Expand to single-bp genomic positions (for direct comparison)
 # Prepare genome coordinates
 SK1_gff <- rtracklayer::import.gff(here('data/GFF/SK1.all_feature.gff'))
-S288C_gff <- rtracklayer::import.gff(here('data/GFF/S288c.all_feature.gff'))
+S288C_gff <- rtracklayer::import.gff(here('data/GFF/S288C.all_feature.gff'))
 
 SK1_start <- SK1_gff[SK1_gff$type == 'centromere']@ranges@start
 SK1_end <- SK1_start + SK1_gff[SK1_gff$type == 'centromere']@ranges@width - 1
