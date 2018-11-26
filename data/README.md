@@ -112,7 +112,7 @@ Run the following R code.
 
 ```r
 # Load SNPs
-S288cvSK1_snp <- readr::read_tsv(here('data/S288c_v_SK1.snp'))
+S288cvSK1_snp <- readr::read_tsv(here('data/S288c_v_SK1_raw.snp'))
 head(S288cvSK1_snp, 10)
 
 message('Number of identified SNPs: ', nrow(S288cvSK1_snp))
