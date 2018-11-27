@@ -7,6 +7,7 @@
 library(here)
 library(tidyverse)
 library(wesanderson)
+library(RColorBrewer)
 
 # Load ggplot2
 source(here('helper_ggplot2_settings.R'))
@@ -48,9 +49,31 @@ renamed_data$method <- factor(
 # Order samples by decreasing Red1 amount
 renamed_data$sample <- factor(
     renamed_data$sample, levels=c(
-        'AH8104_1', 'AH8104_2', 'AH8218_1', 'AH8218_2', 'AH8220_1', 'AH8220_2',
-        'AH8151_1', 'AH8151_2', 'AH9048_1', 'AH9048_2', 'AH7011_1', 'AH7011_2',
-        'AH8219_1', 'AH8219_2'))
+        'AH7011_1', 'AH7011_2', 'AH9048_1', 'AH9048_2', 'AH8151_1', 'AH8151_2',
+        'AH8218_1', 'AH8218_2', 'AH8220_1', 'AH8220_2', 'AH8219_1', 'AH8219_2',
+        'AH8104_1', 'AH8104_2'))
+
+strain_labels <- c(
+    expression(
+        paste(italic('red1'[italic('ycs4S')]), ' 1'),
+        paste(italic('red1'[italic('ycs4S')]), ' 2'),
+        paste(italic('red1-pG162A'), ' 1'),
+        paste(italic('red1-pG162A'), ' 2'),
+        paste(italic('rec8'), Delta, ' 1'),
+        paste(italic('rec8'), Delta, ' 2'),
+        paste(
+            italic('red1'[italic('ycs4S')]), '/', italic('RED1'), ' 1'),
+        paste(
+            italic('red1'[italic('ycs4S')]), '/', italic('RED1'), ' 2'),
+        paste(italic('red1'), Delta, '/', italic('RED1'), ' 1'),
+        paste(italic('red1'), Delta, '/', italic('RED1'), ' 2'),
+        paste(
+            italic('red1'[italic('ycs4S')]), '/', italic('red1'), Delta, ' 1'),
+        paste(
+            italic('red1'[italic('ycs4S')]), '/', italic('red1'), Delta, ' 2'),
+        paste(italic('dot1'), Delta, ' 1'),
+        paste(italic('dot1'), Delta, ' 2'))
+)
 
 ggplot(renamed_data, aes(sample, sinf, fill=method)) +
   scale_fill_manual('Data type', values=colors) +
@@ -58,27 +81,7 @@ ggplot(renamed_data, aes(sample, sinf, fill=method)) +
   ylim(0, 1) +
   labs(title='', x='',
        y='Red1 amount\nrelative to wild type') +
-  scale_x_discrete(labels=c(
-      expression(
-          paste(italic('dot1'), Delta, ' 1'),
-          paste(italic('dot1'), Delta, ' 2'),
-          paste(
-              italic('red1'[italic('ycs4S')]), '/', italic('RED1'), ' 1'),
-          paste(
-              italic('red1'[italic('ycs4S')]), '/', italic('RED1'), ' 2'),
-          paste(italic('red1'), Delta, '/RED1 1'),
-          paste(italic('red1'), Delta, '/RED1 2'),
-          paste(italic('rec8'), Delta, ' 1'),
-          paste(italic('rec8'), Delta, ' 2'),
-          paste(italic('red1-pG162A'), ' 1'),
-          paste(italic('red1-pG162A'), ' 2'),
-          paste(italic('red1'[italic('ycs4S')]), ' 1'),
-          paste(italic('red1'[italic('ycs4S')]), ' 2'),
-          paste(
-              italic('red1'[italic('ycs4S')]), '/', italic('red1'), Delta, ' 1'),
-          paste(
-              italic('red1'[italic('ycs4S')]), '/', italic('red1'), Delta, ' 2'))
-      )) +
+  scale_x_discrete(labels=strain_labels) +
   theme(axis.text.x=element_text(face='italic', angle=45, hjust=1),
         legend.text=element_text(size=8))
   
