@@ -19,6 +19,7 @@ source(here('helper_ggplot2_settings.R'))
 # Histogram of distances between consecutive SNPs                              #
 #------------------------------------------------------------------------------#
 SNPs <- read_tsv(SNPs)
+SNPs <- read_tsv('~/Downloads/S288c_v_SK1.snp')
 
 # Keep only SK1 chromosomes and order table by chromosome and position
 SNPs <- SNPs[str_detect(SNPs$chr, '_SK1'), ]
@@ -87,9 +88,39 @@ mean_values <- SNPs %>% group_by(chr) %>%
 median_values <- SNPs %>% group_by(chr) %>%
     summarise(Median=median(Distance, na.rm = TRUE))
 
+### The SNP list generated using Mauve has some problems, particularly large
+### numbers of SNPs detected in short, non-homologous regions; these 
+### artificially inflate the SNP distance stats on chrI
+# Remove selected non-homologous regions on chrI before plotting
+regions <- list(
+    c(200000, 208500),
+    c(32000, 34000)
+)
+
+length <- 0
+for (region in regions) {
+    length <- length + (region[2] - region[1])
+}
+message('Total length removed from chrI: ', length / 1000, ' kb')
+
+SNPs_homol <- SNPs
+for (region in regions) {
+    SNPs_homol <- subset(
+        SNPs_homol,
+        !(chr == 'chrI_SK1' & position > region[1] & position < region[2]))
+}
+
+nrow(SNPs)
+nrow(SNPs_homol)
+
+mean_values <- SNPs_homol %>% group_by(chr) %>%
+    summarise(Mean=mean(Distance, na.rm = TRUE))
+median_values <- SNPs_homol %>% group_by(chr) %>%
+    summarise(Median=median(Distance, na.rm = TRUE))
+
 drop_genome <- function(string) str_replace(string, '_SK1', '')
 
-p <- ggplot(SNPs, aes(Distance)) +
+ggplot(SNPs_homol, aes(Distance)) +
     geom_histogram(aes(y= ..count..), bins=50, colour='grey30',
                    alpha=0.25, na.rm = T) +
     facet_wrap( ~ chr, ncol=4, labeller=as_labeller(drop_genome)) +
@@ -107,11 +138,3 @@ p <- ggplot(SNPs, aes(Distance)) +
     theme(
         strip.background=element_blank()
     )
-
-p
-
-### Why are the values for chr I so low?
-n <- SNPs %>% group_by(chr) %>% summarize(n())
-n_1bp <- SNPs %>% filter(Distance == 1) %>% group_by(chr) %>% summarize(n())
-
-n_1bp$`n()` / n$`n()` * 100
