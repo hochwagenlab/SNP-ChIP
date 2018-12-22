@@ -249,6 +249,9 @@ ggplot(df_chrI, aes(position / 1000, normalized_signal, colour=strain)) +
   geom_area(position='identity', aes(fill=strain, colour=strain),
             alpha=0.5, size=0.25) +
   facet_grid(strain ~ .) +
+  annotate('text', x=20, y=6, label=expression(
+    italic('RED1'), italic('red1'[italic('ycs4S')])),
+    size=3, colour=c(wt_color, low_Red1_color)) +
   scale_fill_manual(values=c(wt_color, low_Red1_color)) +
   labs(title='After spike-in normalization',
        x=paste0('Position on chr I (Kb)'), y='') +
@@ -266,6 +269,9 @@ ggplot(df_chrI_region, aes(position / 1000, normalized_signal, colour=strain)) +
   geom_area(position='identity', aes(fill=strain, colour=strain),
             alpha=0.5, size=0.25) +
   facet_grid(strain ~ .) +
+  annotate('text', x=196, y=6, label=expression(
+    italic('RED1'), italic('red1'[italic('ycs4S')])),
+    size=3, colour=c(wt_color, low_Red1_color)) +
   scale_fill_manual(values=c(wt_color, low_Red1_color)) +
   labs(title='After spike-in normalization',
        x=paste0('Position on chr I (Kb)'), y='') +
