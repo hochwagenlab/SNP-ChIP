@@ -1,7 +1,7 @@
 # SNP-ChIP
 ### A versatile and tag-free method to quantify changes in protein binding across the genome
 
-The paper is currently under preparation.
+The paper can be found on PubMed ([PMID: 30654749](https://www.ncbi.nlm.nih.gov/pubmed/30654749)).
 
 The raw and processed sequencing data have been deposited in NCBI's Gene Expression Omnibus and are accessible through GEO Series accession number [GSE115092](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE115092).
 
