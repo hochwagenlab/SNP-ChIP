@@ -26,11 +26,9 @@ Some tasks were performed on the NYU HPC platform (running the
 
 The raw sequencing data can be obtained from NCBI's Gene Expression Omnibus
 through GEO Series accession number
-[GSE115092](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE115092)
-(private until publication). The following code uses NCBI's Entrez Direct and
+[GSE115092](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE115092). The following code uses NCBI's Entrez Direct and
 SRA Toolkit (see [Download Tools](https://www.ncbi.nlm.nih.gov/home/tools/)) to
-download all SRR files in the project and dump them to FASTQ files (will work
-  after publication of the paper, once the submission is public).
+download all SRR files in the project and dump them to FASTQ files.
 
 > _Please note that the following code will download many relatively large
 files. Alternatively, you can download selected files using their individual
