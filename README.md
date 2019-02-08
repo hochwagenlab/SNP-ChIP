@@ -3,7 +3,7 @@
 
 The paper can be found on PubMed ([PMID: 30654749](https://www.ncbi.nlm.nih.gov/pubmed/30654749)).
 
-The raw and processed sequencing data have been deposited in NCBI's Gene Expression Omnibus and are accessible through GEO Series accession number [GSE115092](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE115092).
+The raw and processed sequencing data have been deposited in NCBI's Gene Expression Omnibus and are accessible through GEO Series accession number [GSE115092](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE115092). The correspondence between all sample titles and the data file names is listed in [this table](data/GEO_file_name_key.md).
 
 The R code used to produce the figures can be found in this directory. Details about lower level data analysis, starting from the raw FASTQ files output by the illumina sequencer, can be found in the [data](data/README.md) section.
 
